@@ -1,0 +1,28 @@
+
+.game {
+    padding-left: 5vw;
+    padding-top: 10vh;
+    height: 40vh;
+    width: 20vw;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.cell {
+    width: 5vw;
+    height: 10vh;
+    border: 5px solid #bbada0;
+    background: #d3cac1;
+    font-size: 30px;
+    font-family: 'Google Sans';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+}
