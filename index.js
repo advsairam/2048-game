@@ -255,6 +255,13 @@ document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
     render();
 })
 
+let reset = () => {
+    grid =[[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]];
+    generateInitialValues();
+    score_generated = 0;
+    updateScore();
+}
+
 // Tic Tac Toe
 
 
