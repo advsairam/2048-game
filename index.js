@@ -30,6 +30,8 @@ let text_colors = {
     2048: "#f9f6f2"
 }
 
+let score_generated = 0;
+
 // DOM tree -> Document Object Model
 
 let render = () => {
@@ -68,6 +70,18 @@ let generateInitialValues = () => {
 
 generateInitialValues();
 
+// let calculateScore = (val) => {
+//     let n = Math.log(val) / Math.log(2);
+//     console.log('In calculateScore');
+//     console.log('n: ' + n);
+//     console.log('before calculating score_generated, score_generated: ' + score_generated);
+//     score_generated = score_generated + ((n-1)*val); // aₙ = (n−1) 2ⁿ
+// }
+
+let calculateScore = (val) => {
+    score_generated = score_generated + val;
+}
+
 
 let clickUp = () => {
     for (let c = 0; c < 4; c++) {
@@ -80,7 +94,9 @@ let clickUp = () => {
                     val = grid[r][c];
                     grid[r][c] = 0;
                 } else if (val === grid[r][c]) {
+                    console.log('Hi Sai, in clickUp, score adding place, val: ' + val);
                     grid[curr][c] = val + grid[r][c];
+                    calculateScore(grid[curr][c]);
                     val = 0;
                     grid[r][c] = 0;
                     curr++;
@@ -107,7 +123,9 @@ let clickLeft = () => {
                     val = grid[r][c];
                     grid[r][c] = 0;
                 } else if (val === grid[r][c]) {
+                    console.log('Hi Sai, in clickLeft, score adding place, val: ' + val);
                     grid[r][curr] = val + grid[r][c];
+                    calculateScore(grid[r][curr]);
                     val = 0;
                     grid[r][c] = 0;
                     curr++;
@@ -134,7 +152,9 @@ let clickDown = () => {
                     val = grid[r][c];
                     grid[r][c] = 0;
                 } else if (val === grid[r][c]) {
+                    console.log('Hi Sai, in clickDown, score adding place, val: ' + val);
                     grid[curr][c] = val + grid[r][c];
+                    calculateScore(grid[curr][c]);
                     val = 0;
                     grid[r][c] = 0;
                     curr--;
@@ -161,7 +181,9 @@ let clickRight = () => {
                     val = grid[r][c];
                     grid[r][c] = 0;
                 } else if (val === grid[r][c]) {
+                    console.log('Hi Sai, in clickRight, score adding place, val: ' + val);
                     grid[r][curr] = val + grid[r][c];
+                    calculateScore(grid[r][curr]);
                     val = 0;
                     grid[r][c] = 0;
                     curr--;
@@ -192,6 +214,27 @@ let generateRandomValue = () => {
     return true;
 }
 
+let isSumPossible = () => {
+    let sumPossible = false;
+    for (let r = 0; r < 4; r++) {
+        if (sumPossible) break;
+        for (c = 0; c < 4; c++) {
+            if (sumPossible) break;
+            if ((r+1 < 4) && grid[r][c] === grid[r+1][c]) {
+                sumPossible = true;
+            } else if ((c+1 < 4) && grid[r][c] === grid[r][c+1]) {
+                sumPossible = true;
+            }
+        }
+    }
+    return sumPossible;
+}
+
+let updateScore = () => {
+    let scoreElement = document.getElementById("score");
+    scoreElement.innerHTML = score_generated;
+}
+
 document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
 
     let old_grid = JSON.stringify(grid);
@@ -201,11 +244,13 @@ document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
     else if (e.key === "ArrowLeft") clickLeft();
     else if (e.key === "ArrowRight") clickRight();
 
-    if (old_grid === JSON.stringify(grid)) return;
+    updateScore();
 
     let generated = generateRandomValue();
     
-    if (!generated) console.log("You Lose!!!")
+    if (!generated && !isSumPossible()) alert("You Lose!!!")
+
+    if (old_grid === JSON.stringify(grid)) return;
 
     render();
 })

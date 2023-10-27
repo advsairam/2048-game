@@ -26,3 +26,13 @@
     color: white;
     font-weight: 700;
 }
+
+.scoreCard {
+    display: flex;
+    align-items: center;
+}
+
+#score {
+    font-size: 24px;
+    margin: 0 10px;
+}
